@@ -16,6 +16,4 @@ def send_message(message):
     time.sleep(random.randint(1,3))
     print("ECHOBOT: {}".format(respond(message)))
 # Call the function send_message to start the diaglogue
-
-print("Hi, how are you?")
 send_message(input())
