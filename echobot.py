@@ -29,11 +29,11 @@ def respond(message):
     elif check_pattern(message):
         return "{}".format(check_pattern(message))
     else:
-        return "I didn't get that: {}".format(message)
+        return random.choice(["Hmm","Ok","I see","That's interesting"])
 
 def send_message(message):
-    print("USER: {}".format(message))
-    wait_time = random.randint(1,4)
+    #print("USER: {}".format(message))
+    wait_time = random.randint(1,3)
     time.sleep(wait_time)    
     print("Echobot: {}".format(respond(message)))
 
