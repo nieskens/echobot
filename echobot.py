@@ -1,6 +1,5 @@
 # COMPUTING & COGNITION
 # ECHOBOT v0.2 
-
 import time
 import random
 import re
@@ -10,19 +9,25 @@ responses = {
     "How are you?":["I'm good, thanks for asking!"]
 }
 
-# Adding parentheses in the pattern string defines a group. 
+# Add a dictionary of patterns and responses
+pattern_responses = {
+    "Do you remember (.*)":["Of course I remember {}","Yes, I do remember {}","Now that you mention it, I do remember {}"],
+    "I feel (.*)":["Why do you feel {}", "You feel {}, why?","How long have you been feeling {}"]
+}
+
 def check_pattern(message):
-    pattern = "Do you remember (.*)"
-    match = re.search(pattern, message)
-    if match:
-        # return the substring without the pattern
-        return match.group(1)
+    for pattern in pattern_responses:
+        match = re.search(pattern, message)
+        if match:
+            # return the substring without the pattern
+            answer = random.choice(pattern_responses[pattern])
+            return answer.format(match.group(1))
 
 def respond(message):
     if message in responses:
         return random.choice(  responses[message]  )    
     elif check_pattern(message):
-        return "Of course I remember {}".format(check_pattern(message))
+        return "{}".format(check_pattern(message))
     else:
         return "I didn't get that: {}".format(message)
 
