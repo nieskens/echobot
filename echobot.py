@@ -1,10 +1,8 @@
 # COMPUTING & COGNITION
-# ECHOBOT v0.2 Including MongoDB connection
-
+# ECHOBOT v0.2 
 
 import time
 import random
-# import the re module (regular expressions)
 import re
 
 responses = {
@@ -12,19 +10,19 @@ responses = {
     "How are you?":["I'm good, thanks for asking!"]
 }
 
-# define a function that checks for a certain pattern in the message
+# Adding parentheses in the pattern string defines a group. 
 def check_pattern(message):
-    pattern = "Do you remember"
+    pattern = "Do you remember (.*)"
     match = re.search(pattern, message)
     if match:
-        return True
+        # return the substring without the pattern
+        return match.group(1)
 
-# If message not in responses, check for a pattern
 def respond(message):
     if message in responses:
-        return random.choice(responses[message])    
+        return random.choice(  responses[message]  )    
     elif check_pattern(message):
-        return "I recognized a pattern."
+        return "Of course I remember {}".format(check_pattern(message))
     else:
         return "I didn't get that: {}".format(message)
 
