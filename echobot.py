@@ -1,59 +1,38 @@
 # COMPUTING & COGNITION
-# ECHOBOT v0.2 Including SQLite database
+# ECHOBOT v0.2 Including MongoDB connection
 
-import sqlite3 as lite
-import sys
 
 import time
 import random
+# import the re module (regular expressions)
+import re
 
-bot_is_waiting = True
-
-# SQLite connection
-conn = None
-try:
-    conn = lite.connect('echobot_db.db')
-    print("Opened database")
-    '''
-    cur = con.cursor()
-    cur.execute('SELECT SQLITE_VERSION()')
-    data = cur.fetchone()
-    print("SQLite version: {}".format(data))
-    '''
-except: 
-    print("Error")
-    sys.exit(1)
-
-finally:
-    if conn:
-        conn.close()
-
-
-
-# A dictionary of bot responses
 responses = {
-            "Hello":"Hi!",
-            "What's your name?":"My name is EchoBot.",
-            "How are you?":"I'm good, thanks!",
-            "How old are you?":"Wouldn't you wanna know!?"
-            }
+    "Hi":["Hello, how are you?","Hey,you again!", "How have you been?","Goodday, what's up?"],
+    "How are you?":["I'm good, thanks for asking!"]
+}
 
+# define a function that checks for a certain pattern in the message
+def check_pattern(message):
+    pattern = "Do you remember"
+    match = re.search(pattern, message)
+    if match:
+        return True
 
-# Define a function that responds to a user's message: respond
+# If message not in responses, check for a pattern
 def respond(message):
-    # Concatenate the user's message to the end of a standard bot respone
     if message in responses:
-        bot_message = responses[message]
+        return random.choice(responses[message])    
+    elif check_pattern(message):
+        return "I recognized a pattern."
     else:
-        bot_message = "I can hear you! You said: {}".format(message)
-    return bot_message
+        return "I didn't get that: {}".format(message)
 
-# Define a function that sends the message and prints both user and bot's answers
 def send_message(message):
-    print("YOU: {}".format(message))
-    time.sleep(random.randint(1,3))
-    print("ECHOBOT: {}".format(respond(message)))
+    print("USER: {}".format(message))
+    wait_time = random.randint(1,4)
+    time.sleep(wait_time)    
+    print("Echobot: {}".format(respond(message)))
 
-# Call the function send_message to start the dialogue
-#while bot_is_waiting:
-send_message("DB test")
+while True:
+    send_message(input())
